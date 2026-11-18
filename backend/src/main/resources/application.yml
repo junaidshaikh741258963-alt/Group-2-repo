@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ai-travel-planner-backend
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:travel_planner}?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=utf8&connectionTimeZone=UTC
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      pool-name: travel-planner-pool
+  jackson:
+    # Mirrors JSON.stringify(z.object(...)) with .optional(): keys the model
+    # omitted stay absent instead of being emitted as null.
+    default-property-inclusion: non_null
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+
+# The original Next.js app answered errors with plain { error: "..." } bodies
+# and no stack traces; keep the same shape in production.
+server.error:
+  include-message: always
+  include-stacktrace: never
+  include-binding-errors: never
